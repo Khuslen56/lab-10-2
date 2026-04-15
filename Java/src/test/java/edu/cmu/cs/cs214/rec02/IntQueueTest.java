@@ -38,8 +38,8 @@ public class IntQueueTest {
     @Before
     public void setUp() {
         // comment/uncomment these lines to test each class
-        mQueue = new LinkedIntQueue();
-    //    mQueue = new ArrayIntQueue();
+        // mQueue = new LinkedIntQueue();
+        mQueue = new ArrayIntQueue();
 
         testList = new ArrayList<>(List.of(1, 2, 3));
     }
@@ -52,20 +52,22 @@ public class IntQueueTest {
 
     @Test
     public void testNotEmpty() {
-        // TODO: write your own unit test
-        fail("Test not implemented");
+        mQueue.enqueue(10);
+        assertFalse(mQueue.isEmpty());
     }
 
     @Test
     public void testPeekEmptyQueue() {
-        // TODO: write your own unit test
-        fail("Test not implemented");
+        assertNull(mQueue.peek());
     }
 
     @Test
     public void testPeekNoEmptyQueue() {
-        // TODO: write your own unit test
-        fail("Test not implemented");
+        mQueue.enqueue(1);
+        mQueue.enqueue(2);
+
+        assertEquals(Integer.valueOf(1), mQueue.peek());
+        assertEquals(2, mQueue.size());
     }
 
     @Test
@@ -80,8 +82,52 @@ public class IntQueueTest {
 
     @Test
     public void testDequeue() {
-        // TODO: write your own unit test
-        fail("Test not implemented");
+        assertNull(mQueue.dequeue());
+
+        for (Integer value : testList) {
+            mQueue.enqueue(value);
+        }
+
+        assertEquals(Integer.valueOf(1), mQueue.dequeue());
+        assertEquals(Integer.valueOf(2), mQueue.dequeue());
+        assertEquals(Integer.valueOf(3), mQueue.dequeue());
+        assertNull(mQueue.dequeue());
+        assertTrue(mQueue.isEmpty());
+    }
+
+    @Test
+    public void testClear() {
+        for (Integer value : testList) {
+            mQueue.enqueue(value);
+        }
+
+        mQueue.clear();
+
+        assertTrue(mQueue.isEmpty());
+        assertEquals(0, mQueue.size());
+        assertNull(mQueue.peek());
+        assertNull(mQueue.dequeue());
+    }
+
+    @Test
+    public void testResizePreservesOrder() {
+        for (int i = 0; i < 10; i++) {
+            assertTrue(mQueue.enqueue(i));
+        }
+
+        assertEquals(Integer.valueOf(0), mQueue.dequeue());
+        assertEquals(Integer.valueOf(1), mQueue.dequeue());
+        assertEquals(Integer.valueOf(2), mQueue.dequeue());
+
+        assertTrue(mQueue.enqueue(10));
+        assertTrue(mQueue.enqueue(11));
+        assertTrue(mQueue.enqueue(12));
+
+        for (int expected = 3; expected <= 12; expected++) {
+            assertEquals(Integer.valueOf(expected), mQueue.dequeue());
+        }
+
+        assertTrue(mQueue.isEmpty());
     }
 
     @Test
